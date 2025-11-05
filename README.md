@@ -1,100 +1,97 @@
 🗂️ spring-batch-csv-to-mysql-scheduler
 
-A Spring Boot project that uses Spring Batch and Spring Scheduler to automatically read data from a CSV file every 2 minutes and store it into a MySQL database.🗂️ spring-batch-csv-to-mysql-scheduler
+This is a Spring Boot project that uses Spring Batch and Spring Scheduler to automatically read employee data from a CSV file every 2 minutes and store it into a MySQL database.
 
 
 🚀 Features
 
-Reads employee data from a CSV file (employees.csv)
+📄 Reads employee data from a CSV file (employees.csv)
 
-Processes and saves data into MySQL using Spring Batch
+⚙️ Processes and saves records into MySQL using Spring Batch
 
-Automatically runs every 2 minutes using Spring Scheduler
+⏰ Automatically runs every 2 minutes using Spring Scheduler
 
-Tracks job metadata using Spring Batch system tables
+🧾 Tracks job execution metadata using built-in Spring Batch tables
 
+⚙️ How to Set Up and Run
 
-🧰 Tech Stack
+### 1️⃣ Clone the Repository
 
-Java 21
+Open your terminal and run:
 
-Spring Boot 3.5.7
-
-Spring Batch
-
-Spring Scheduler
-
-Spring Data JPA
-
-MySQL
-
-Lombok
-
-
-
-⚙️ Setup Instructions
-1️⃣ Clone the Repository
+```bash
 git clone https://github.com/Kapilan1998/spring-batch-csv-to-mysql-scheduler.git
+```
+
+```bash
 cd spring-batch-csv-to-mysql-scheduler
+```
 
-2️⃣ Configure Database
+###  2️⃣ Set Up MySQL Database
 
-Create a MySQL database for Spring Batch:
+Create a new database in MySQL and add it in the application.properties file:
 
-CREATE DATABASE spring-batch-scheduler;
+###  3️⃣ Initialize Spring Batch Metadata Tables Manually
 
-Update your application.properties file as needed:
+If you prefer to create the Spring Batch metadata tables yourself:
 
-spring.datasource.url=jdbc:mysql://localhost:3306/spring-batch-scheduler
-spring.datasource.username=root
-spring.datasource.password=your_password
-spring.jpa.hibernate.ddl-auto=update
-spring.batch.jdbc.initialize-schema=always
+🧭 Using WSL Terminal:
 
-
-3️⃣ (Optional) Manually Initialize Spring Batch Metadata Tables
-
-If you prefer to initialize Spring Batch tables manually instead of using
-spring.batch.jdbc.initialize-schema=always, follow these steps 👇
-
-a. Open WSL terminal and navigate to your Maven repository:
+```bash
 cd /mnt/c/Users/Kabilan/.m2/repository/org/springframework/batch/spring-batch-core/5.2.4
-b. Extract the MySQL schema file:
+```
+
+```bash
 jar tf spring-batch-core-5.2.4.jar | grep schema-mysql.sql
+```
+
+```bash
 jar xf spring-batch-core-5.2.4.jar org/springframework/batch/core/schema-mysql.sql
-c. Copy it to your Desktop for easy access:
+```
+
+```bash
 cp org/springframework/batch/core/schema-mysql.sql /mnt/c/Users/Kabilan/Desktop/
-![WSL Commands](assets/wsl-commands.png)
+```
 
-d. Run the schema file in MySQL CLI on Windows:
+🖥️ Then in MySQL CLI:
+
+```bash
 USE spring-batch-scheduler;
+```
+
+```bash
 SOURCE C:/Users/Kabilan/Desktop/schema-mysql.sql;
+```
+
+```bash
 SHOW TABLES;
-You should now see tables like BATCH_JOB_INSTANCE, BATCH_JOB_EXECUTION, etc.
-![MYSQL CLI Commands](assets/mysql-cli-commands.png)
+```
 
-4️⃣ Prepare Your CSV File
+You should see system tables such as:
 
-Place your CSV file under:
+BATCH_JOB_INSTANCE, BATCH_JOB_EXECUTION, BATCH_STEP_EXECUTION, etc.
 
-src/main/resources/data/employees.csv
+###  4️⃣ Prepare the CSV File
 
-Example content:
+Create your CSV file here: -    src/main/resources/data/employees.csv
 
-name,email,salary
-John Doe,john.doe@example.com,50000
-Jane Smith,jane.smith@example.com,60000
 
-5️⃣ Run the Application
+###  5️⃣ Run the Application
 
-You can run it from your IDE or use Maven:
+Use your IDE or run via Maven:
 
+```bash
 mvn spring-boot:run
+```
 
-6️⃣ Verify
+###  6️⃣ Verify the Output
 
-Every 2 minutes, the scheduler triggers the batch job.
+Every 2 minutes, the scheduler will:
 
-Processed employee data will be saved in your MySQL table.
+Read the CSV file
 
+Process the records
 
+Insert data into your MySQL table
+
+You can also verify job logs in the Spring Batch metadata tables (BATCH_JOB_EXECUTION, BATCH_STEP_EXECUTION, etc.).
